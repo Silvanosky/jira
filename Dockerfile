@@ -135,7 +135,7 @@ RUN wget -O jira.bin https://www.atlassian.com/software/jira/downloads/binary/at
     && chown -R $JIRA_USER:$JIRA_GROUP $JIRA_HOME $JIRA_INSTALL $JIRA_SCRIPTS /home/$JIRA_USER \
     # Clean caches and tmps                                                                    \
     && rm -rf /var/cache/apk/* /tmp/* /var/log/*
-    #Inject class
+    #Inject class (For educational purposes)
     && mkdir /tmp/atlassian-extras-3.2 \
     && unzip $JIRA_INSTALL/atlassian-jira/WEB-INF/lib/atlassian-extras-3.2.jar -d /tmp/atlassian-extras-3.2 \
     && rm -rf /tmp/atlassian-extras-3.2/META-INF \
