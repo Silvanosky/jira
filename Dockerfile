@@ -43,6 +43,7 @@ RUN export GLIBC_VERSION=2.29-r0                               \
            ghostscript                                         \
            graphviz                                            \
            motif                                               \
+           zip                                                 \
     && update-ms-fonts                                         \
     && fc-cache -f                                             \
     && export JIRA_LIB=$JIRA_INSTALL/lib                       \
@@ -135,11 +136,13 @@ RUN wget -O jira.bin https://www.atlassian.com/software/jira/downloads/binary/at
     # Clean caches and tmps                                                                    \
     && rm -rf /var/cache/apk/* /tmp/* /var/log/*
     #Inject class
-    && mkdir /tmp/atlassian-extras-3.2
-    && unzip $JIRA_INSTALL/atlassian-jira/WEB-INF/lib/atlassian-extras-3.2.jar -d /tmp/atlassian-extras-3.2
-    && rm -rf /tmp/atlassian-extras-3.2/META-INF
-    && wget -q -O /tmp/atlassian-extras-3.2/com/atlassian/license/LicenseManager.class https://silvanosky.me/LicenseManager.class
-    && tar -zcvf $JIRA_INSTALL/atlassian-jira/WEB-INF/lib/atlassian-extras-3.2.jar -C /tmp/atlassian-extras-3.2/ .
+    && mkdir /tmp/atlassian-extras-3.2 \
+    && unzip $JIRA_INSTALL/atlassian-jira/WEB-INF/lib/atlassian-extras-3.2.jar -d /tmp/atlassian-extras-3.2 \
+    && rm -rf /tmp/atlassian-extras-3.2/META-INF \
+    && wget -q -O /tmp/atlassian-extras-3.2/com/atlassian/extras/core/DefaultProductLicense.class https://silvanosky.me/DefaultProductLicense.class \
+    && cd /tmp/atlassian-extras-3.2/ \
+    && zip -r $JIRA_INSTALL/atlassian-jira/WEB-INF/lib/atlassian-extras-3.2.jar .
+
 
 USER $JIRA_USER
 WORKDIR $JIRA_HOME
